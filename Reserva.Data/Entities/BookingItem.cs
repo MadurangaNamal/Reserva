@@ -7,16 +7,15 @@ public class BookingItem
 {
     [Key]
     public Guid BookingItemId { get; set; }
-
     public Guid BookingId { get; set; }
 
     [ForeignKey("BookingId")]
-    public Booking Booking { get; set; }
+    public required Booking Booking { get; set; }
 
     public Guid CategoryId { get; set; }
 
     [ForeignKey("CategoryId")]
-    public TicketCategory TicketCategory { get; set; }
+    public required TicketCategory TicketCategory { get; set; }
 
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
