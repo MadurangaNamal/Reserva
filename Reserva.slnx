@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="Reserva.Contracts/Reserva.Contracts.csproj" />
   <Project Path="Reserva.Core/Reserva.Core.csproj" />
   <Project Path="Reserva.Data/Reserva.Data.csproj" />
