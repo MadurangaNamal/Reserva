@@ -8,6 +8,12 @@
   <ItemGroup>
     <PackageReference Include="CoreWCF.Http" Version="1.9.0" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.9.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.27">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -15,6 +21,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>e8f2b98f-8699-4b04-a8e4-a20d8b6b98a9</UserSecretsId>
   </PropertyGroup>
 
 </Project>
