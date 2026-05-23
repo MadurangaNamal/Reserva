@@ -11,7 +11,7 @@ public class Event
     public Guid OrganizerId { get; set; }
 
     [ForeignKey("OrganizerId")]
-    public required User Organizer { get; set; }
+    public User? Organizer { get; set; }
     public required string Title { get; set; }
     public string? Description { get; set; }
     public required string Venue { get; set; }
