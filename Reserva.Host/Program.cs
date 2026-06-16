@@ -25,7 +25,7 @@ services.AddAutoMapper(cfg =>
 services.AddScoped<IUserManager, UserManager>();
 services.AddScoped<IEventManager, EventManager>();
 
-var serviceProvider = services.BuildServiceProvider();
+services.BuildServiceProvider();
 
 Console.WriteLine("Reserva Host is running...");
 Console.ReadLine();
