@@ -24,6 +24,8 @@ services.AddAutoMapper(cfg =>
 
 services.AddScoped<IUserManager, UserManager>();
 services.AddScoped<IEventManager, EventManager>();
+services.AddScoped<ITicketCategoryManager, TicketCategoryManager>();
+services.AddScoped<IBookingManager, BookingManager>();
 
 services.BuildServiceProvider();
 

@@ -10,12 +10,12 @@ public class BookingItem
     public Guid BookingId { get; set; }
 
     [ForeignKey("BookingId")]
-    public required Booking Booking { get; set; }
+    public Booking Booking { get; set; }
 
     public Guid CategoryId { get; set; }
 
     [ForeignKey("CategoryId")]
-    public required TicketCategory TicketCategory { get; set; }
+    public TicketCategory TicketCategory { get; set; }
 
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
