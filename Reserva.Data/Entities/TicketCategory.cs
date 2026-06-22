@@ -10,7 +10,7 @@ public class TicketCategory
     public Guid EventId { get; set; }
 
     [ForeignKey("EventId")]
-    public required Event Event { get; set; }
+    public Event? Event { get; set; }
     public required string Name { get; set; }
     public decimal Price { get; set; }
     public int TotalSeats { get; set; }

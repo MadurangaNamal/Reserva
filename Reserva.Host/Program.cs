@@ -26,6 +26,8 @@ services.AddScoped<IUserManager, UserManager>();
 services.AddScoped<IEventManager, EventManager>();
 services.AddScoped<ITicketCategoryManager, TicketCategoryManager>();
 services.AddScoped<IBookingManager, BookingManager>();
+services.AddScoped<IWaitlistManager, WaitlistManager>();
+services.AddScoped<IReportManager, ReportManager>();
 
 services.BuildServiceProvider();
 

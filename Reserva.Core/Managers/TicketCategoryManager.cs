@@ -51,7 +51,6 @@ public class TicketCategoryManager : ITicketCategoryManager
         {
             CategoryId = Guid.NewGuid(),
             EventId = eventId,
-            Event = existingEvent,
             Name = name,
             Price = price,
             TotalSeats = totalSeats,

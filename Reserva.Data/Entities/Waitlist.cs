@@ -11,17 +11,17 @@ public class Waitlist
     public Guid EventId { get; set; }
 
     [ForeignKey("EventId")]
-    public required Event Event { get; set; }
+    public Event? Event { get; set; }
 
     public Guid UserId { get; set; }
 
     [ForeignKey("UserId")]
-    public required User User { get; set; }
+    public User? User { get; set; }
 
     public Guid CategoryId { get; set; }
 
     [ForeignKey("CategoryId")]
-    public required TicketCategory TicketCategory { get; set; }
+    public TicketCategory? TicketCategory { get; set; }
 
     public DateTime RequestedAt { get; set; }
     public WaitlistStatus Status { get; set; }

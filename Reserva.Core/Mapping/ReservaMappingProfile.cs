@@ -21,5 +21,8 @@ public class ReservaMappingProfile : Profile
 
         CreateMap<BookingItem, BookingItemDto>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.TicketCategory.Name));
+
+        CreateMap<Waitlist, WaitlistDto>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
     }
 }
