@@ -11,18 +11,18 @@ public interface IBookingService
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ReservaFault))]
-    BookingDto CreateBooking(Guid userId, Guid eventId, List<BookingItemRequest> items);
+    Task<BookingDto> CreateBookingAsync(Guid userId, Guid eventId, List<BookingItemRequest> items);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ReservaFault))]
-    bool CancelBooking(Guid bookingId);
+    Task<bool> CancelBookingAsync(Guid bookingId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    BookingDto GetBookingById(Guid bookingId);
+    Task<BookingDto> GetBookingByIdAsync(Guid bookingId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    List<BookingDto> GetBookingHistoryByUser(Guid userId);
+    Task<List<BookingDto>> GetBookingHistoryByUserAsync(Guid userId);
 }

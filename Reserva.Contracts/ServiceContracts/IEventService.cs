@@ -10,26 +10,26 @@ public interface IEventService
     [OperationContract]
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
-    EventDto CreateEvent(Guid organizerId, string title, string? description, string venue, DateTime eventDate);
+    Task<EventDto> CreateEventAsync(Guid organizerId, string title, string? description, string venue, DateTime eventDate);
 
     [OperationContract]
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
-    EventDto UpdateEvent(Guid eventId, string title, string? description, string venue, DateTime eventDate);
+    Task<EventDto> UpdateEventAsync(Guid eventId, string title, string? description, string venue, DateTime eventDate);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ReservaFault))]
-    bool CancelEvent(Guid eventId);
+    Task<bool> CancelEventAsync(Guid eventId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    EventDto GetEventById(Guid eventId);
+    Task<EventDto> GetEventByIdAsync(Guid eventId);
 
     [OperationContract]
-    List<EventDto> SearchEvents(string? keyword, DateTime? date, string? status);
+    Task<List<EventDto>> SearchEventsAsync(string? keyword, DateTime? date, string? status);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    List<EventDto> GetEventsByOrganizer(Guid organizerId);
+    Task<List<EventDto>> GetEventsByOrganizerAsync(Guid organizerId);
 }

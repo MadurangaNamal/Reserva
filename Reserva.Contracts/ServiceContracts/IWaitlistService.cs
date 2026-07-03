@@ -11,13 +11,13 @@ public interface IWaitlistService
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ReservaFault))]
-    WaitlistDto JoinWaitlist(Guid userId, Guid eventId, Guid categoryId);
+    Task<WaitlistDto> JoinWaitlistAsync(Guid userId, Guid eventId, Guid categoryId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    bool LeaveWaitlist(Guid waitlistId);
+    Task<bool> LeaveWaitlistAsync(Guid waitlistId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    int GetWaitlistPosition(Guid waitlistId);
+    Task<int> GetWaitlistPositionAsync(Guid waitlistId);
 }

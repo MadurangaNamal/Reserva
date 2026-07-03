@@ -10,14 +10,14 @@ public interface ITicketCategoryService
     [OperationContract]
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
-    TicketCategoryDto AddCategory(Guid eventId, string name, decimal price, int totalSeats);
+    Task<TicketCategoryDto> AddCategoryAsync(Guid eventId, string name, decimal price, int totalSeats);
 
     [OperationContract]
     [FaultContract(typeof(ValidationFault))]
     [FaultContract(typeof(NotFoundFault))]
-    TicketCategoryDto UpdateCategory(Guid categoryId, string name, decimal price);
+    Task<TicketCategoryDto> UpdateCategoryAsync(Guid categoryId, string name, decimal price);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    List<TicketCategoryDto> GetCategoriesByEvent(Guid eventId);
+    Task<List<TicketCategoryDto>> GetCategoriesByEventAsync(Guid eventId);
 }

@@ -9,14 +9,14 @@ public interface IUserService
 {
     [OperationContract]
     [FaultContract(typeof(ValidationFault))]
-    UserDto Register(string fullName, string email, string password, string? phone, string role);
+    Task<UserDto> RegisterAsync(string fullName, string email, string password, string? phone, string role);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    UserDto GetById(Guid userId);
+    Task<UserDto> GetByIdAsync(Guid userId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ValidationFault))]
-    UserDto UpdateProfile(Guid userId, string fullName, string? phone);
+    Task<UserDto> UpdateProfileAsync(Guid userId, string fullName, string? phone);
 }

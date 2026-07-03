@@ -4,17 +4,18 @@ using System.ServiceModel;
 
 namespace Reserva.Contracts.ServiceContracts;
 
+[ServiceContract]
 public interface IReportService
 {
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    int GetTicketsSoldByEvent(Guid eventId);
+    Task<int> GetTicketsSoldByEventAsync(Guid eventId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    decimal GetRevenueByEvent(Guid eventId);
+    Task<decimal> GetRevenueByEventAsync(Guid eventId);
 
     [OperationContract]
     [FaultContract(typeof(NotFoundFault))]
-    BookingSummaryDto GetBookingsSummary(Guid eventId);
+    Task<BookingSummaryDto> GetBookingsSummaryAsync(Guid eventId);
 }
