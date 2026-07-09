@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CoreWCF;
+using CoreWCF.Configuration;
+using CoreWCF.Description;
+using Microsoft.EntityFrameworkCore;
 using Reserva.Contracts.ServiceContracts;
 using Reserva.Core.Interfaces;
 using Reserva.Core.Managers;
@@ -8,37 +9,78 @@ using Reserva.Core.Mapping;
 using Reserva.Data;
 using Reserva.Services;
 
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddUserSecrets<Program>()
-    .Build();
+    .AddUserSecrets<Program>();
 
-var services = new ServiceCollection();
+builder.Services.AddDbContext<ReservaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration["ReservaDBConnection"]));
 
-services.AddDbContext<ReservaDbContext>(options =>
-    options.UseSqlServer(configuration["ReservaDBConnection"]));
-
-services.AddAutoMapper(cfg =>
+builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<ReservaMappingProfile>();
 });
 
-services.AddScoped<IUserManager, UserManager>();
-services.AddScoped<IEventManager, EventManager>();
-services.AddScoped<ITicketCategoryManager, TicketCategoryManager>();
-services.AddScoped<IBookingManager, BookingManager>();
-services.AddScoped<IWaitlistManager, WaitlistManager>();
-services.AddScoped<IReportManager, ReportManager>();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IEventManager, EventManager>();
+builder.Services.AddScoped<ITicketCategoryManager, TicketCategoryManager>();
+builder.Services.AddScoped<IBookingManager, BookingManager>();
+builder.Services.AddScoped<IWaitlistManager, WaitlistManager>();
+builder.Services.AddScoped<IReportManager, ReportManager>();
 
-services.AddScoped<IUserService, UserService>();
-services.AddScoped<IEventService, EventService>();
-services.AddScoped<ITicketCategoryService, TicketCategoryService>();
-services.AddScoped<IBookingService, BookingService>();
-services.AddScoped<IWaitlistService, WaitlistService>();
-services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<TicketCategoryService>();
+builder.Services.AddScoped<BookingService>();
+builder.Services.AddScoped<WaitlistService>();
+builder.Services.AddScoped<ReportService>();
 
-var serviceProvider = services.BuildServiceProvider();
+// CoreWCF
+builder.Services.AddServiceModelServices();
+builder.Services.AddServiceModelMetadata();
+builder.Services.AddSingleton<IServiceBehavior, UseRequestHeadersForMetadataAddressBehavior>();
 
-Console.WriteLine("Reserva Host is running...");
-Console.ReadLine();
+var app = builder.Build();
+
+// CoreWCF Middleware
+app.UseServiceModel(serviceBuilder =>
+{
+    var binding = new BasicHttpBinding();
+
+    serviceBuilder.AddService<UserService>();
+
+    serviceBuilder.ConfigureServiceHostBase<UserService>(host =>
+    {
+        var debugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
+        if (debugBehavior == null)
+        {
+            debugBehavior = new ServiceDebugBehavior();
+            host.Description.Behaviors.Add(debugBehavior);
+        }
+        debugBehavior.IncludeExceptionDetailInFaults = true;
+    });
+
+    serviceBuilder.AddServiceEndpoint<UserService, IUserService>(binding, "/Service/UserService");
+
+    serviceBuilder.AddService<EventService>();
+    serviceBuilder.AddServiceEndpoint<EventService, IEventService>(binding, "/Service/EventService");
+
+    serviceBuilder.AddService<TicketCategoryService>();
+    serviceBuilder.AddServiceEndpoint<TicketCategoryService, ITicketCategoryService>(binding, "/Service/TicketCategoryService");
+
+    serviceBuilder.AddService<BookingService>();
+    serviceBuilder.AddServiceEndpoint<BookingService, IBookingService>(binding, "/Service/BookingService");
+
+    serviceBuilder.AddService<WaitlistService>();
+    serviceBuilder.AddServiceEndpoint<WaitlistService, IWaitlistService>(binding, "/Service/WaitlistService");
+
+    serviceBuilder.AddService<ReportService>();
+    serviceBuilder.AddServiceEndpoint<ReportService, IReportService>(binding, "/Service/ReportService");
+
+    var serviceMetadataBehavior = app.Services.GetRequiredService<ServiceMetadataBehavior>();
+    serviceMetadataBehavior.HttpGetEnabled = true;
+});
+
+await app.RunAsync();
