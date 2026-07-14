@@ -141,7 +141,9 @@ public class EventManager : IEventManager
 
     public async Task<bool> CancelEventAsync(Guid eventId)
     {
-        var currentEvent = await _dbContext.Events.FindAsync(eventId);
+        var currentEvent = await _dbContext.Events
+            .Include(e => e.Bookings)
+            .FirstOrDefaultAsync(e => e.EventId == eventId);
 
         if (currentEvent == null)
             throw new KeyNotFoundException($"Event with ID '{eventId}' was not found.");

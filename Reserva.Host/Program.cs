@@ -7,6 +7,7 @@ using Reserva.Core.Interfaces;
 using Reserva.Core.Managers;
 using Reserva.Core.Mapping;
 using Reserva.Data;
+using Reserva.Host.Extensions;
 using Reserva.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,35 +49,30 @@ var app = builder.Build();
 app.UseServiceModel(serviceBuilder =>
 {
     var binding = new BasicHttpBinding();
+    var includeExceptionDetails = app.Environment.IsDevelopment();
 
     serviceBuilder.AddService<UserService>();
-
-    serviceBuilder.ConfigureServiceHostBase<UserService>(host =>
-    {
-        var debugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-        if (debugBehavior == null)
-        {
-            debugBehavior = new ServiceDebugBehavior();
-            host.Description.Behaviors.Add(debugBehavior);
-        }
-        debugBehavior.IncludeExceptionDetailInFaults = true;
-    });
-
+    serviceBuilder.EnableDebugBehavior<UserService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<UserService, IUserService>(binding, "/Service/UserService");
 
     serviceBuilder.AddService<EventService>();
+    serviceBuilder.EnableDebugBehavior<EventService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<EventService, IEventService>(binding, "/Service/EventService");
 
     serviceBuilder.AddService<TicketCategoryService>();
+    serviceBuilder.EnableDebugBehavior<TicketCategoryService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<TicketCategoryService, ITicketCategoryService>(binding, "/Service/TicketCategoryService");
 
     serviceBuilder.AddService<BookingService>();
+    serviceBuilder.EnableDebugBehavior<BookingService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<BookingService, IBookingService>(binding, "/Service/BookingService");
 
     serviceBuilder.AddService<WaitlistService>();
+    serviceBuilder.EnableDebugBehavior<WaitlistService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<WaitlistService, IWaitlistService>(binding, "/Service/WaitlistService");
 
     serviceBuilder.AddService<ReportService>();
+    serviceBuilder.EnableDebugBehavior<ReportService>(includeExceptionDetails);
     serviceBuilder.AddServiceEndpoint<ReportService, IReportService>(binding, "/Service/ReportService");
 
     var serviceMetadataBehavior = app.Services.GetRequiredService<ServiceMetadataBehavior>();
